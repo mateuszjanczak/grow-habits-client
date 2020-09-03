@@ -1,13 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import Winwheel from 'winwheel';
-import {appendScript, removeScript} from "../utils/scripts";
-import Button from "./Button";
+import {appendScript, removeScript} from "../../utils/scripts";
+import Button from "../Button";
+import dayjs from "dayjs";
 
 class Wheel extends React.Component {
 
-    state = {
-        wheel: null
+    constructor(props) {
+        super(props)
+        const { id, cooldown, lockTime } = this.props;
+        const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );//dayjs(lockTime).diff(dayjs()) / 1000;
+        this.state = {
+            id,
+            cooldown,
+            lockTime,
+            cdInterval
+        }
     }
 
     componentDidMount() {
@@ -32,6 +41,11 @@ class Wheel extends React.Component {
             ...this.state,
             wheel
         })
+
+        const interval = setInterval(() => {
+            const { cdInterval } = this.state;
+            cdInterval ? this.setState({...this.state, cdInterval: cdInterval-1}) : clearInterval(interval);
+        }, 1000);
     }
 
 
@@ -39,12 +53,22 @@ class Wheel extends React.Component {
         removeScript("/static/js/TweenMax.min.js");
     }
 
+    renderSpin(cdInterval) {
+        const isDisabled = cdInterval > 0;
+
+        return (
+            <Button onClick={this.handleClick} disabled={isDisabled}>
+                {isDisabled ? cdInterval : "Spin"}
+            </Button>
+        )
+    }
+
     render() {
         return (
             <Wrapper>
                 <canvas id="myCanvas" height="400" />
                 <Action>
-                    <Button onClick={this.handleClick}>Spin</Button>
+                    {this.renderSpin(this.state.cdInterval)}
                 </Action>
             </Wrapper>
         )

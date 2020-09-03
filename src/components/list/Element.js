@@ -1,15 +1,29 @@
 import React from "react";
 import styled from "styled-components";
+import dayjs from "dayjs";
 import {NavLink} from "react-router-dom";
 import {routes} from "../../routes";
 import Button from "../Button";
 
 class Element extends React.Component {
 
-    state = {
-        id: 1,
-        title: "Title",
-        cooldown: 0
+    constructor(props) {
+        super(props)
+        const { id, title, lockTime } = this.props.item;
+        const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );//dayjs(lockTime).diff(dayjs()) / 1000;
+        this.state = {
+            id,
+            title,
+            lockTime,
+            cdInterval
+        }
+    }
+
+    componentDidMount() {
+        const interval = setInterval(() => {
+            const { cdInterval } = this.state;
+            cdInterval ? this.setState({...this.state, cdInterval: cdInterval-1}) : clearInterval(interval);
+        }, 1000);
     }
 
     render() {
@@ -17,19 +31,19 @@ class Element extends React.Component {
             <Wrapper>
                 <Heading>{this.state.title}</Heading>
                 <Action>
-                    {this.renderEntry(this.state.id, this.state.cooldown)}
+                    {this.renderEntry(this.state.id, this.state.cdInterval)}
                 </Action>
             </Wrapper>
         )
     }
 
-    renderEntry(id, cooldown) {
-        const isDisabled = cooldown > 0;
+    renderEntry(id, cdInterval) {
+        const isDisabled = cdInterval > 0;
 
         return (
             <NavLink to={routes.list + id}>
                 <Button disabled={isDisabled}>
-                    {isDisabled ? cooldown : "Entry"}
+                    {isDisabled ? cdInterval : "Entry"}
                 </Button>
             </NavLink>
         )
@@ -39,9 +53,9 @@ class Element extends React.Component {
 
 const Wrapper = styled.div`
   display: grid;
-  padding: 1rem;
+  padding: 1rem 2rem;
   margin-bottom: 1rem;
-  background: #343a40;
+  background: #e76f51;
       
   @media (min-width: 576px) {
     grid-template-columns: 1fr auto;
@@ -49,7 +63,7 @@ const Wrapper = styled.div`
 `;
 
 const Heading = styled.h3`
-  text-align: center;
+  //text-align: center;
 `;
 
 const Action = styled.div`

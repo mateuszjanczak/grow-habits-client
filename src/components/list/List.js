@@ -1,14 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 import Element from "./Element";
+import TaskService from "../../services/TaskService";
 
 class List extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = { items: [] }
+    }
+
+    componentDidMount() {
+        TaskService.getTaskList()
+            .then(response => response.json())
+            .then(data => this.setState({items: data}))
+    }
+
     render() {
+        const { items } = this.state;
         return (
             <Wrapper>
-                <Element />
-                <Element />
-                <Element />
+                {items.map(item =>
+                <Element item={item} key={item.id}/>)}
             </Wrapper>
         );
     }
