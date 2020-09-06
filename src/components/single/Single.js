@@ -14,7 +14,9 @@ class Single extends React.Component {
             id: "",
             title: "",
             cooldown: "",
-            lockTime: ""
+            lockTime: "",
+            optionList: [],
+            isLoaded: false
         }
     }
 
@@ -27,7 +29,7 @@ class Single extends React.Component {
         }, () => {
             TaskService.getSingleTask(id)
                 .then(response => response.json())
-                .then(data => this.setState({...data}));
+                .then(data => this.setState({...data, isLoaded: true}))
         })
     }
 
@@ -38,7 +40,7 @@ class Single extends React.Component {
                     <Button>Back</Button>
                 </NavLink>
                 <Heading>{this.state.title}</Heading>
-                <Wheel id={this.state.id} cooldown={this.state.cooldown} lockTime={this.state.lockTime}/>
+                {this.state.isLoaded && <Wheel id={this.state.id} cooldown={this.state.cooldown} lockTime={this.state.lockTime} optionList={this.state.optionList}/>}
             </Wrapper>
         )
     }

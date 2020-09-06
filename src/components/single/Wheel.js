@@ -4,38 +4,45 @@ import Winwheel from 'winwheel';
 import {appendScript, removeScript} from "../../utils/scripts";
 import Button from "../Button";
 import dayjs from "dayjs";
+import wheelBackground from '../../assets/wheel_background.png';
+import WheelService from "../../services/WheelService";
 
 class Wheel extends React.Component {
 
     constructor(props) {
         super(props)
-        const { id, cooldown, lockTime } = this.props;
+
+        const { id, cooldown, lockTime, optionList } = this.props;
         const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );//dayjs(lockTime).diff(dayjs()) / 1000;
+        const numSegments = optionList.length;
+
         this.state = {
             id,
             cooldown,
             lockTime,
+            optionList,
+            numSegments,
             cdInterval
         }
     }
 
     componentDidMount() {
         appendScript("/static/js/TweenMax.min.js");
+
         const wheel = new Winwheel({
             canvasId: "myCanvas",
-            numSegments: 4,
-            segments: [
-                {fillStyle: "#eae56f", text: "One"},
-                {fillStyle: "#89f26e", text: "Two"},
-                {fillStyle: "#7de6ef", text: "Three"},
-                {fillStyle: "#e7706f", text: "Four"},
-            ],
+            numSegments: 2,
             animation: {
                 type: "spinToStop",
                 duration: 5,
                 spins: 8,
             },
         });
+
+        const { optionList } = this.state;
+
+        optionList.forEach(option => wheel.addSegment({"text": option.name, "size": option.power * 360 / 100}));
+        wheel.draw();
 
         this.setState({
             ...this.state,
@@ -66,7 +73,7 @@ class Wheel extends React.Component {
     render() {
         return (
             <Wrapper>
-                <canvas id="myCanvas" height="400" />
+                <Canvas id="myCanvas" height="400" />
                 <Action>
                     {this.renderSpin(this.state.cdInterval)}
                 </Action>
@@ -75,15 +82,32 @@ class Wheel extends React.Component {
     }
 
     handleClick = () => {
-        let { wheel } = this.state;
-        wheel.startAnimation();
-    }
+        let { wheel, id } = this.state;
+
+        const data = {
+            id
+        };
+
+        WheelService.roll(data)
+            .then(response => response.json())
+            .then(data => data.option.segment)
+            .then(segment => wheel.getRandomForSegment(segment + 2))
+            .then(angle => wheel.animation.stopAngle = angle)
+            .then(() => wheel.startAnimation())
+
+        }
 }
 
 const Wrapper = styled.div`
   display: grid;
   justify-items: center;
   padding: 1rem;
+`;
+
+const Canvas = styled.canvas`
+  background-image: url(${wheelBackground});
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const Action = styled.div`
