@@ -41,7 +41,7 @@ class Wheel extends React.Component {
 
         const { optionList } = this.state;
 
-        optionList.forEach(option => wheel.addSegment({"text": option.name, "size": option.power * 360 / 100}));
+        optionList.forEach(option => wheel.addSegment({"text": option.name + "\n" + option.power + "%", "size": option.power * 360 / 100, "fillStyle": option.color}));
         wheel.draw();
 
         this.setState({
