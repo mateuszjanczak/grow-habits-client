@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const Button = styled.button`
   padding: 1rem 2rem;
-  background: none;
-  border: 1px solid #e9c46a;
+  background: #e76f51;
+  border: 1px solid #EEEEFF;
   color: white;
   transition-duration: 0.4s;
   &:hover {

@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Element from "./Element";
 import TaskService from "../../services/TaskService";
+import Button from "../Button";
+import {NavLink} from "react-router-dom";
+import {routes} from "../../routes";
 
 class List extends React.Component {
 
@@ -20,6 +23,11 @@ class List extends React.Component {
         const { items } = this.state;
         return (
             <Wrapper>
+                <Action>
+                    <NavLink to={routes.new}>
+                        <Button>+</Button>
+                    </NavLink>
+                </Action>
                 {items.map(item =>
                 <Element item={item} key={item.id}/>)}
             </Wrapper>
@@ -29,6 +37,12 @@ class List extends React.Component {
 
 const Wrapper = styled.div`
 
+`;
+
+const Action = styled.div`
+  display: grid;
+  justify-content: end;
+  margin: 1rem 0;
 `;
 
 export default List;

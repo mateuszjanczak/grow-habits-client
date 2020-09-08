@@ -49,6 +49,7 @@ class Single extends React.Component {
 const Wrapper = styled.div`
   padding: 2rem;
   background: #e76f51;
+  border: 1px solid #EEEEFF;
 `;
 
 const Heading = styled.h2`

@@ -56,7 +56,7 @@ const Wrapper = styled.div`
   padding: 1rem 2rem;
   margin-bottom: 1rem;
   background: #e76f51;
-      
+  border: 1px solid #EEEEFF;
   @media (min-width: 576px) {
     grid-template-columns: 1fr auto;
   }

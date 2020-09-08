@@ -8,7 +8,7 @@ import wheelBackground from '../../assets/wheel_background.png';
 import WheelService from "../../services/WheelService";
 
 class Wheel extends React.Component {
-
+    
     constructor(props) {
         super(props)
 
@@ -81,6 +81,16 @@ class Wheel extends React.Component {
         )
     }
 
+    checkError = async (response) => {
+        const json = await response.json();
+
+        if (response.status >= 200 && response.status <= 299) {
+            return json;
+        } else {
+            throw Error(json.message);
+        }
+    }
+
     handleClick = () => {
         let { wheel, id } = this.state;
 
@@ -88,13 +98,32 @@ class Wheel extends React.Component {
             id
         };
 
+/*        WheelService.roll(data)
+            .then((res) => this.checkError(res))
+            .then((jsonResponse) => {
+                const { segment } = jsonResponse.option;
+                this.spinWheel(segment);
+            })
+            .catch((error) => alert(error))*/
+
         WheelService.roll(data)
-            .then(response => response.json())
+            .then(response => {
+                if(response.status === 200){
+                    return response.json();
+                } else {
+                    throw Error(response.statusText);
+                }
+            })
             .then(data => data.option.segment)
             .then(segment => wheel.getRandomForSegment(segment + 2))
             .then(angle => wheel.animation.stopAngle = angle)
             .then(() => wheel.startAnimation())
+            .catch((error) => alert(error))
 
+        }
+
+        spinWheel = () => {
+            console.log("spox")
         }
 }
 

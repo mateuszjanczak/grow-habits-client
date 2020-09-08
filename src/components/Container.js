@@ -4,14 +4,16 @@ import {Route, Switch} from "react-router-dom";
 import {routes} from "../routes";
 import Single from "./single/Single";
 import List from "./list/List";
+import New from "./new/New";
 
 class Container extends React.Component {
     render() {
         return (
             <Wrapper>
                 <Switch>
+                    <Route path={routes.new} component={New}/>
                     <Route path={routes.single} component={Single}/>
-                    <Route path={routes.list} component={List}/>
+                    <Route path={[routes.list, routes.homepage]} component={List}/>
                 </Switch>
             </Wrapper>
         )
