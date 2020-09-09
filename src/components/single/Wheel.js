@@ -92,39 +92,22 @@ class Wheel extends React.Component {
     }
 
     handleClick = () => {
-        let { wheel, id } = this.state;
+        let { id } = this.state;
 
-        const data = {
-            id
-        };
-
-/*        WheelService.roll(data)
+        WheelService.roll({id})
             .then((res) => this.checkError(res))
             .then((jsonResponse) => {
                 const { segment } = jsonResponse.option;
                 this.spinWheel(segment);
             })
-            .catch((error) => alert(error))*/
-
-        WheelService.roll(data)
-            .then(response => {
-                if(response.status === 200){
-                    return response.json();
-                } else {
-                    throw Error(response.statusText);
-                }
-            })
-            .then(data => data.option.segment)
-            .then(segment => wheel.getRandomForSegment(segment + 2))
-            .then(angle => wheel.animation.stopAngle = angle)
-            .then(() => wheel.startAnimation())
             .catch((error) => alert(error))
+    }
 
-        }
-
-        spinWheel = () => {
-            console.log("spox")
-        }
+    spinWheel = (segment) => {
+        const { wheel } = this.state;
+        wheel.animation.stopAngle = wheel.getRandomForSegment(segment + 2);
+        wheel.startAnimation();
+    }
 }
 
 const Wrapper = styled.div`

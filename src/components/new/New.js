@@ -3,41 +3,60 @@ import styled from "styled-components";
 import {routes} from "../../routes";
 import Button from "../Button";
 import {NavLink} from "react-router-dom";
+import TaskService from "../../services/TaskService";
 
 class New extends React.Component {
 
     state = {
         title: "",
         cooldown: "",
-        options: [{"name" : "", "power" : "", "color" : "" }]
+        optionRequestList: [{"name" : "", "power" : "", "color" : "" }]
     }
 
     handleAdd = () => {
         this.setState({
             ...this.state,
-            options: [...this.state.options, {"name" : "", "power" : "", "color" : "" }]
+            optionRequestList: [...this.state.optionRequestList, {"name" : "", "power" : "", "color" : "" }]
         })
     }
 
     handleDel = () => {
         this.setState({
             ...this.state,
-            options: this.state.options.slice(0, -1)
+            options: this.state.optionRequestList.slice(0, -1)
         })
+    }
+
+    handleSubmit = () => {
+        const data = this.state;
+        TaskService.addTask(data)
+            .then((res) => this.checkError(res))
+            .then(() => this.props.history.push(routes.list))
+            .catch((error) => alert(error))
+    }
+
+    checkError = async (response) => {
+        const json = await response.json();
+
+        if (response.status >= 200 && response.status <= 299) {
+            return json;
+        } else {
+            throw new Error(json.message);
+        }
     }
 
     handleChangeOptions = (event, index) => {
 
         const { name, value } = event.target;
-        const { options } = this.state;
-        const list = [...options];
+        const { optionRequestList } = this.state;
+        const list = [...optionRequestList];
 
         list[index][name] = value;
 
         this.setState(
             {
                 ...this.state,
-                options: list
+                optionRequestList: list
             }
         );
     };
@@ -68,7 +87,7 @@ class New extends React.Component {
                     </div>
                     <h2>Options</h2>
                     <div>
-                        {this.state.options.map((item, i) =>
+                        {this.state.optionRequestList.map((item, i) =>
                             <div>
                                 <Input type="text" placeholder="Name" name="name" value={item.name} onChange={e => this.handleChangeOptions(e, i)}/>
                                 <Input type="number" placeholder="Power" name="power" value={item.power} onChange={e => this.handleChangeOptions(e, i)}/>
@@ -82,7 +101,7 @@ class New extends React.Component {
                     </div>
 
                     <Action>
-                        <Button>Save</Button>
+                        <Button onClick={this.handleSubmit}>Save</Button>
                     </Action>
                 </Form>
             </Wrapper>
