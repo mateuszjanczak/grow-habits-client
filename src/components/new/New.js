@@ -23,7 +23,7 @@ class New extends React.Component {
     handleDel = () => {
         this.setState({
             ...this.state,
-            options: this.state.optionRequestList.slice(0, -1)
+            optionRequestList: this.state.optionRequestList.slice(0, -1)
         })
     }
 
