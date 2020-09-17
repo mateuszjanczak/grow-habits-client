@@ -89,7 +89,7 @@ class New extends React.Component {
                     <div>
                         {this.state.optionRequestList.map((item, i) =>
                             <Inputs>
-                                <span> {++i} </span>
+                                <span> {i+1} </span>
                                 <Input type="text" placeholder="Name" name="name" value={item.name} onChange={e => this.handleChangeOptions(e, i)}/>
                                 <Input type="number" placeholder="Power" name="power" value={item.power} onChange={e => this.handleChangeOptions(e, i)}/>
                                 <Input type="color" placeholder="Color" name="color" value={item.color} onChange={e => this.handleChangeOptions(e, i)}/>
