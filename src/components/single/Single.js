@@ -50,6 +50,7 @@ const Wrapper = styled.div`
   padding: 2rem;
   background: #e76f51;
   border: 1px solid #EEEEFF;
+  margin: 1rem;
 `;
 
 const Heading = styled.h2`

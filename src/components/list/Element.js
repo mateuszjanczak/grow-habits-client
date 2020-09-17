@@ -57,13 +57,16 @@ const Wrapper = styled.div`
   margin-bottom: 1rem;
   background: #e76f51;
   border: 1px solid #EEEEFF;
+
   @media (min-width: 576px) {
     grid-template-columns: 1fr auto;
   }
 `;
 
 const Heading = styled.h3`
-  //text-align: center;
+  @media (max-width: 575px) {
+    text-align: center;
+  }
 `;
 
 const Action = styled.div`

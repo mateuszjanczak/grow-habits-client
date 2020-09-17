@@ -88,11 +88,12 @@ class New extends React.Component {
                     <h2>Options</h2>
                     <div>
                         {this.state.optionRequestList.map((item, i) =>
-                            <div>
+                            <Inputs>
+                                <span> {++i} </span>
                                 <Input type="text" placeholder="Name" name="name" value={item.name} onChange={e => this.handleChangeOptions(e, i)}/>
                                 <Input type="number" placeholder="Power" name="power" value={item.power} onChange={e => this.handleChangeOptions(e, i)}/>
                                 <Input type="color" placeholder="Color" name="color" value={item.color} onChange={e => this.handleChangeOptions(e, i)}/>
-                            </div>
+                            </Inputs>
                         )}
                     </div>
                     <div>
@@ -113,6 +114,7 @@ const Wrapper = styled.div`
   padding: 2rem;
   background: #e76f51;
   border: 1px solid #EEEEFF;
+  margin: 1rem;
 `;
 
 const Form = styled.div`
@@ -126,6 +128,11 @@ const Input = styled.input`
   margin: 1rem 0.5rem;
   padding: 1rem;
   color: black;
+  
+  @media (max-width: 575px) {
+    width: 100%;
+    justify-self: center;
+  }
 `;
 
 const Action = styled.div`
@@ -139,6 +146,14 @@ const Control = styled.button`
   width: 2.5rem;
   padding: 0.25rem;
   margin: 0.25rem;
+`;
+
+const Inputs = styled.div`
+  //border-bottom: 1px solid white;
+  margin-bottom: 1rem;
+  @media (max-width: 575px) {
+    display: grid;
+  }
 `;
 
 export default New;

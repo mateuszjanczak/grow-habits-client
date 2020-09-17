@@ -36,13 +36,13 @@ class List extends React.Component {
 }
 
 const Wrapper = styled.div`
-
+  margin: 1rem;
 `;
 
 const Action = styled.div`
   display: grid;
   justify-content: end;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 `;
 
 export default List;
