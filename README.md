@@ -1,3 +1,4 @@
+# Grow Habits Wheel
 Aplikacja do pielęgnowania dobrych nawyków o których decyduje los na kole fortuny.
 
 ## Wymagania
