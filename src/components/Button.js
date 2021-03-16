@@ -6,6 +6,8 @@ const Button = styled.button`
   border: 1px solid #EEEEFF;
   color: white;
   transition-duration: 0.4s;
+  box-shadow:0 2.5px 4px 0 rgba(0,0,0,0.2),0 1.5px 5px 0 rgba(0,0,0,0.19);
+
   &:hover {
     color: #eee;
     background: #264653;

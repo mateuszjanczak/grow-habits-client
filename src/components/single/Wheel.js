@@ -5,7 +5,6 @@ import {appendScript, removeScript} from "../../utils/scripts";
 import Button from "../Button";
 import dayjs from "dayjs";
 import wheelBackground from '../../assets/wheel_background.png';
-import WheelService from "../../services/WheelService";
 
 class Wheel extends React.Component {
     
@@ -13,7 +12,6 @@ class Wheel extends React.Component {
         super(props)
 
         const { id, cooldown, lockTime, optionList } = this.props;
-        const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );//dayjs(lockTime).diff(dayjs()) / 1000;
         const numSegments = optionList.length;
 
         this.state = {
@@ -21,14 +19,33 @@ class Wheel extends React.Component {
             cooldown,
             lockTime,
             optionList,
-            numSegments,
-            cdInterval
+            numSegments
         }
     }
 
     componentDidMount() {
         appendScript("/static/js/TweenMax.min.js");
 
+        this.createWheel();
+
+        const { lockTime } = this.props;
+        this.checkInterval(lockTime)
+    }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.lockTime !== this.props.lockTime) {
+            const { lockTime } = this.props;
+            this.checkInterval(lockTime);
+            this.createWheel();
+        }
+    }
+
+    componentWillUnmount() {
+        removeScript("/static/js/TweenMax.min.js");
+    }
+
+    createWheel = () => {
         const wheel = new Winwheel({
             canvasId: "myCanvas",
             numSegments: 2,
@@ -44,20 +61,30 @@ class Wheel extends React.Component {
         optionList.forEach(option => wheel.addSegment({"text": option.name + "\n" + option.power.toFixed(2) + "%", "size": option.power * 360 / 100, "fillStyle": option.color}));
         wheel.draw();
 
-        this.setState({
-            ...this.state,
-            wheel
-        })
-
-        const interval = setInterval(() => {
-            const { cdInterval } = this.state;
-            cdInterval ? this.setState({...this.state, cdInterval: cdInterval-1}) : clearInterval(interval);
-        }, 1000);
+        this.setState({wheel})
     }
 
+    checkInterval = (lockTime) => {
+        const cdInterval = parseInt( dayjs(lockTime).diff(dayjs()) / 1000);
 
-    componentWillUnmount() {
-        removeScript("/static/js/TweenMax.min.js");
+        this.setState({
+            ...this.state,
+            cdInterval
+        }, () => {
+            let { interval } = this.state;
+
+            clearInterval(interval);
+
+            interval = setInterval(() => {
+                const { cdInterval } = this.state;
+                cdInterval > 0 ? this.setState({...this.state, cdInterval: cdInterval - 1}) : clearInterval(interval);
+            }, 1000);
+
+            this.setState({
+                ...this.state,
+                interval
+            })
+        })
     }
 
     renderSpin(cdInterval) {
@@ -81,26 +108,10 @@ class Wheel extends React.Component {
         )
     }
 
-    checkError = async (response) => {
-        const json = await response.json();
-
-        if (response.status >= 200 && response.status <= 299) {
-            return json;
-        } else {
-            throw Error(json.message);
-        }
-    }
-
     handleClick = () => {
         let { id } = this.state;
-
-        WheelService.roll({id})
-            .then((res) => this.checkError(res))
-            .then((jsonResponse) => {
-                const { segment } = jsonResponse.option;
-                this.spinWheel(segment);
-            })
-            .catch((error) => alert(error))
+        const { spinWheelFn } = this.props;
+        spinWheelFn(id, this.spinWheel);
     }
 
     spinWheel = (segment) => {

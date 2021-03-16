@@ -10,7 +10,7 @@ class Element extends React.Component {
     constructor(props) {
         super(props)
         const { id, title, lockTime } = this.props.item;
-        const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );//dayjs(lockTime).diff(dayjs()) / 1000;
+        const cdInterval =  parseInt( dayjs(lockTime).diff(dayjs()) / 1000 );
         this.state = {
             id,
             title,
@@ -57,6 +57,7 @@ const Wrapper = styled.div`
   margin-bottom: 1rem;
   background: #e76f51;
   border: 1px solid #EEEEFF;
+  box-shadow:0 2.5px 4px 0 rgba(0,0,0,0.2),0 1.5px 5px 0 rgba(0,0,0,0.19);
 
   @media (min-width: 576px) {
     grid-template-columns: 1fr auto;

@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   text-align: center;
   padding: 1rem;
   margin-bottom: 1rem;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid white;
 `;
 
 export default Navbar;

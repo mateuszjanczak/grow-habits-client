@@ -115,6 +115,7 @@ const Wrapper = styled.div`
   background: #e76f51;
   border: 1px solid #EEEEFF;
   margin: 1rem;
+  box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 `;
 
 const Form = styled.div`
