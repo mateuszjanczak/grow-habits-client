@@ -49,6 +49,7 @@ class Wheel extends React.Component {
         const wheel = new Winwheel({
             canvasId: "myCanvas",
             numSegments: 2,
+            textFontSize  : 18,
             animation: {
                 type: "spinToStop",
                 duration: 5,

@@ -1,15 +1,15 @@
-# Grow Habits Wheel
-Aplikacja do pielęgnowania dobrych nawyków o których decyduje los na kole fortuny.
+# Wheel of Fortune
+Aplikacja do losowania celów na kole fortuny.
 
 ## Wymagania
-Node.js oraz npm można pobrać z [nodejs.org](https://nodejs.org)<br />
-Uruchomiony serwer (back-end) z [github.com](https://github.com/mateuszjanczak/grow-habits-service)
+Node.js oraz npm można pobrać z [nodejs.org](https://nodejs.org)  
+Uruchomiony serwer (back-end) z [github.com](https://github.com/mateuszjanczak/wheel-of-fortune-service)
 
 ## Demo
-https://grow-habits.herokuapp.com/ (poczekaj, aż heroku wstanie)
+https://mj-wheel-of-fortune.herokuapp.com/ (poczekaj, aż heroku wstanie)
 
 ## Podgląd
-![PREVIEW](./docs/grow-habits-wheel-demo.gif)
+![PREVIEW](./docs/preview.gif)
 
 ## Skrypty
 

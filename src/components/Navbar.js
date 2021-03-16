@@ -5,7 +5,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <Wrapper>
-                <h2>Grow Habits Wheel</h2>
+                <h2>Wheel of Fortune</h2>
             </Wrapper>
         )
     }
